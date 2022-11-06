@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.Create;
-import ru.practicum.shareit.Update;
-import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.List;
@@ -19,6 +17,7 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
     @PostMapping
     UserDto createUser(@Validated({Create.class}) @RequestBody UserDto userDto) {
         return userService.createUser(userDto);

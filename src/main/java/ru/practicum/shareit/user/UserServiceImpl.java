@@ -2,9 +2,6 @@ package ru.practicum.shareit.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.model.ItemMapper;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.model.UserMapper;
@@ -13,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
@@ -34,7 +31,7 @@ public class UserServiceImpl implements UserService{
 
     public List<UserDto> getUsers() {
         List<UserDto> userDtoList = new ArrayList<>();
-        for(User user : userRepository.getUsers()) {
+        for (User user : userRepository.getUsers()) {
             userDtoList.add(UserMapper.toUserDto(user));
         }
         return userDtoList;

@@ -6,10 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.Create;
 import ru.practicum.shareit.Update;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.model.Item;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * TODO Sprint add-controllers.
@@ -19,6 +17,7 @@ import java.util.Set;
 public class ItemController {
     @Autowired
     ItemServiceImpl itemService;
+
     @PostMapping
     ItemDto createItem(@RequestHeader("X-Sharer-User-Id") long userId,
                        @Validated({Create.class}) @RequestBody ItemDto itemDto) {
