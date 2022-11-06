@@ -55,7 +55,7 @@ public class ItemRepository {
     public List<Item> findByUser(User owner) {
         List<Item> listOfItems = new ArrayList<>();
         for (Item item : items.values()) {
-            if (item.getOwner().getId() == owner.getId()) {
+            if (Objects.equals(item.getOwner().getId(), owner.getId())) {
                 listOfItems.add(item);
             }
         }
