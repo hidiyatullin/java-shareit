@@ -66,12 +66,12 @@ public class ItemRepository {
     public Set<Item> findItems(String text) {
         Set<Item> foundItems = new HashSet<>();
         for (Item item : items.values()) {
-            if (item.getName().toLowerCase().contains(text.toLowerCase()) && !text.isBlank()) {
+            if (item.getDescription().toLowerCase().contains(text.toLowerCase()) && !text.isBlank()) {
                 if (item.getAvailable()) {
                     foundItems.add(item);
                 }
             }
-            if (item.getDescription().toLowerCase().contains(text.toLowerCase()) && !text.isBlank()) {
+            if (item.getName().toLowerCase().contains(text.toLowerCase()) && !text.isBlank()) {
                 if (item.getAvailable()) {
                     foundItems.add(item);
                 }
