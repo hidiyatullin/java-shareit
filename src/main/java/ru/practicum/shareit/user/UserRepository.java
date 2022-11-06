@@ -38,7 +38,8 @@ public class UserRepository {
                 oldUser.setName(user.getName());
             }
             return oldUser;
-        } throw new IncorrectEmailException("Пользователь с таким email уже есть в базе");
+        }
+        throw new IncorrectEmailException("Пользователь с таким email уже есть в базе");
     }
 
 

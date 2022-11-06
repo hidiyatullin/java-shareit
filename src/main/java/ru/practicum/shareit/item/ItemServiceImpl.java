@@ -52,7 +52,7 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemDto> findItems(String text) {
         List<ItemDto> itemDtoList = new ArrayList<>();
         Set<Item> items = itemRepository.findItems(text);
-        for(Item item : items) {
+        for (Item item : items) {
             itemDtoList.add(ItemMapper.toItemDto(item));
         }
         return itemDtoList;
