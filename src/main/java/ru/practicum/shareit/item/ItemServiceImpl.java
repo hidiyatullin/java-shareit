@@ -8,9 +8,7 @@ import ru.practicum.shareit.item.model.ItemMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
