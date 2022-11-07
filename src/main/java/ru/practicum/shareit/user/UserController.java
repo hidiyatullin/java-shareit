@@ -8,38 +8,35 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @PostMapping
-    UserDto createUser(@Validated({Create.class}) @RequestBody UserDto userDto) {
+    private UserDto createUser(@Validated({Create.class}) @RequestBody UserDto userDto) {
         return userService.createUser(userDto);
     }
 
     @PatchMapping("/{userId}")
-    UserDto updateUser(@PathVariable Long userId, @RequestBody UserDto userDto) {
+    private UserDto updateUser(@PathVariable Long userId, @RequestBody UserDto userDto) {
         return userService.updateUser(userDto, userId);
     }
 
     @DeleteMapping("/{userId}")
-    void deleteUser(@PathVariable Long userId) {
+    private void deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
     }
 
     @GetMapping("/{userId}")
-    UserDto getUser(@PathVariable Long userId) {
+    private UserDto getUser(@PathVariable Long userId) {
         return userService.getUser(userId);
     }
 
     @GetMapping
-    List<UserDto> getUsers() {
+    private List<UserDto> getUsers() {
         return userService.getUsers();
     }
 }

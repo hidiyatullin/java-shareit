@@ -13,12 +13,6 @@ public class ItemMapper {
                 .owner(item.getOwner())
                 .request(item.getRequest())
                 .build();
-//        return new ItemDto(
-//                item.getName(),
-//                item.getDescription(),
-//                item.isAvailable(),
-//                item.getRequest() != null ? item.getRequest().getId() : null
-//        );
     }
 
     public static Item toItem(ItemDto itemDto, User user) {
@@ -30,12 +24,5 @@ public class ItemMapper {
                 .owner(user)
                 .request(itemDto.getRequest())
                 .build();
-//        return new Item(
-//                itemDto.getName(),
-//                itemDto.getDescription(),
-//                itemDto.isAvailable(),
-//                user,
-//                itemDto.getRequest() != null ? itemDto.getRequest().getId() : null
-//        );
     }
 }

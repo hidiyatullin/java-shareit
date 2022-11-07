@@ -11,13 +11,18 @@ import ru.practicum.shareit.user.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
+    private ItemRepository itemRepository;
+    private UserRepository userRepository;
+
     @Autowired
-    ItemRepository itemRepository;
-    @Autowired
-    UserRepository userRepository;
+    public ItemServiceImpl(ItemRepository itemRepository, UserRepository userRepository) {
+        this.itemRepository = itemRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public ItemDto createItem(ItemDto itemDto, long userId) {
@@ -41,20 +46,15 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> getItems(long userId) {
         User owner = userRepository.getUser(userId);
-        List<ItemDto> itemDtoList = new ArrayList<>();
-        for (Item item : itemRepository.findByUser(owner)) {
-            itemDtoList.add(ItemMapper.toItemDto(item));
-        }
-        return itemDtoList;
+        return itemRepository.findByUser(owner).stream()
+                .map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ItemDto> findItems(String text) {
-        List<ItemDto> itemDtoList = new ArrayList<>();
-        Set<Item> items = itemRepository.findItems(text);
-        for (Item item : items) {
-            itemDtoList.add(ItemMapper.toItemDto(item));
-        }
-        return itemDtoList;
+        return itemRepository.searchItems(text).stream()
+                .map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
     }
 }

@@ -8,12 +8,13 @@ import ru.practicum.shareit.user.model.UserMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     public UserDto createUser(UserDto userDto) {
         User user = UserMapper.toUser(userDto);
@@ -30,11 +31,9 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<UserDto> getUsers() {
-        List<UserDto> userDtoList = new ArrayList<>();
-        for (User user : userRepository.getUsers()) {
-            userDtoList.add(UserMapper.toUserDto(user));
-        }
-        return userDtoList;
+        return userRepository.getUsers().stream()
+                .map(UserMapper::toUserDto)
+                .collect(Collectors.toList());
     }
 
     public void deleteUser(Long userId) {
