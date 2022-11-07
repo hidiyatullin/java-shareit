@@ -1,14 +1,10 @@
-package ru.practicum.shareit.item.dto;
+package ru.practicum.shareit.user.dto;
 
 import lombok.*;
 import ru.practicum.shareit.Create;
-import ru.practicum.shareit.user.model.User;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-
-/**
- * TODO Sprint add-controllers.
- */
 
 @Getter
 @Setter
@@ -16,14 +12,13 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @ToString
 @Builder
-public class ItemDto {
+public class UserDto {
     private Long id;
     @NotBlank(groups = {Create.class})
     private String name;
     @NotBlank(groups = {Create.class})
-    private String description;
-    private Boolean available;
-    private User owner;
-    private String request;
+    @Email(groups = {Create.class})
+    private String email;
+
 
 }
