@@ -24,26 +24,31 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto createItem(ItemDto itemDto, long userId) {
-        User owner = userRepository.getUser(userId);
+        User owner = userRepository.findById(userId).get();
+//        User owner = userRepository.getUser(userId);
         Item item = ItemMapper.toItem(itemDto, owner);
         return ItemMapper.toItemDto(itemRepository.save(item));
+//        return ItemMapper.toItemDto(itemRepository.save(item));
     }
 
     @Override
     public ItemDto updateItem(ItemDto itemDto, long itemId, long userId) {
-        User owner = userRepository.getUser(userId);
+        User owner = userRepository.findById(userId).get();
+//        User owner = userRepository.getUser(userId);
         Item item = ItemMapper.toItem(itemDto, owner);
-        return ItemMapper.toItemDto(itemRepository.update(item, itemId, userId));
+        return ItemMapper.toItemDto(itemRepository.save(item));
+//        return ItemMapper.toItemDto(itemRepository.update(item, itemId, userId));
     }
 
     @Override
     public ItemDto getItem(Long itemId, long userId) {
-        return ItemMapper.toItemDto(itemRepository.get(itemId));
+        return ItemMapper.toItemDto(itemRepository.findById(itemId).get());
     }
 
     @Override
     public List<ItemDto> getItems(long userId) {
-        User owner = userRepository.getUser(userId);
+        User owner = userRepository.findById(userId).get();
+//        User owner = userRepository.getUser(userId);
         return itemRepository.findByUser(owner).stream()
                 .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
