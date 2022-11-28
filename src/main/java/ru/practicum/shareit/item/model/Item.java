@@ -12,19 +12,6 @@ import javax.persistence.*;
  * TODO Sprint add-controllers.
  */
 
-//@Getter
-//@Setter
-//@Builder
-//@AllArgsConstructor
-//@NoArgsConstructor
-//public class Item {
-//    private Long id;
-//    private String name;
-//    private String description;
-//    private Boolean available;
-//    private User owner;
-//    private String request;
-//}
 @Entity
 @Table(name = "items")
 @Getter
@@ -42,7 +29,7 @@ public class Item {
     private String description;
     private Boolean available;
     @ManyToOne
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User owner;
     private String request;
 }

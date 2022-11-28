@@ -1,11 +1,13 @@
 package ru.practicum.shareit.item;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.Create;
 import ru.practicum.shareit.Update;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.user.UserRepository;
 
 import java.util.List;
 
@@ -13,10 +15,15 @@ import java.util.List;
  * TODO Sprint add-controllers.
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/items")
 public class ItemController {
-    @Autowired
-    ItemServiceImpl itemService;
+
+    private ItemServiceImpl itemService;
+
+    public ItemController(ItemServiceImpl itemService) {
+        this.itemService = itemService;
+    }
 
     @PostMapping
     ItemDto createItem(@RequestHeader("X-Sharer-User-Id") long userId,

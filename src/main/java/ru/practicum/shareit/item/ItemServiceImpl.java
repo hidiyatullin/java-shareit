@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -12,11 +13,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
     private ItemRepository itemRepository;
     private UserRepository userRepository;
 
-    @Autowired
     public ItemServiceImpl(ItemRepository itemRepository, UserRepository userRepository) {
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
@@ -49,7 +50,7 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemDto> getItems(long userId) {
         User owner = userRepository.findById(userId).get();
 //        User owner = userRepository.getUser(userId);
-        return itemRepository.findByUser(owner).stream()
+        return itemRepository.findByOwner(owner).stream()
                 .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
     }
