@@ -20,10 +20,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-//    public UserServiceImpl(UserRepository userRepository) {
-//        this.userRepository = userRepository;
-//    }
-
     @Transactional
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -53,7 +49,8 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<UserDto> getUsers() {
-        return userRepository.findAll().stream()
+        return userRepository.findAll()
+                .stream()
                 .map(UserMapper::toUserDto)
                 .collect(Collectors.toList());
     }

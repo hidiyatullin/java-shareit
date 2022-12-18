@@ -2,10 +2,7 @@ package ru.practicum.shareit.booking.dto;
 
 import lombok.*;
 import ru.practicum.shareit.Create;
-import ru.practicum.shareit.booking.BookingState;
 import ru.practicum.shareit.booking.model.Status;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.model.User;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
@@ -15,7 +12,6 @@ import java.time.LocalDateTime;
 /**
  * TODO Sprint add-bookings.
  */
-                            //Сделать свою аннотоацию, чтобы старт был раньше енд
 @Getter
 @Setter
 @AllArgsConstructor
