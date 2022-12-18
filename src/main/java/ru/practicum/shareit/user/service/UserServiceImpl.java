@@ -1,13 +1,16 @@
-package ru.practicum.shareit.user;
+package ru.practicum.shareit.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.shareit.Exeption.UserNotFoundException;
+import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.model.UserMapper;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -15,13 +18,14 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+//    public UserServiceImpl(UserRepository userRepository) {
+//        this.userRepository = userRepository;
+//    }
 
     @Transactional
+    @Override
     public UserDto createUser(UserDto userDto) {
         User user = UserMapper.toUser(userDto);
         return UserMapper.toUserDto(userRepository.save(user));
@@ -30,25 +34,33 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto updateUser(UserDto userDto, long userId) {
         User user = UserMapper.toUser(userDto);
-        return UserMapper.toUserDto(userRepository.save(user));
-//        return UserMapper.toUserDto(userRepository.updateUser(user, userId));
+        User oldUser = UserMapper.toUser(getUser(userId));
+        if (user.getEmail() != null) {
+            oldUser.setEmail(user.getEmail());
+        }
+        if (user.getName() != null) {
+            oldUser.setName(user.getName());
+        }
+        return UserMapper.toUserDto(userRepository.save(oldUser));
     }
 
     public UserDto getUser(Long userId) {
-        return UserMapper.toUserDto(userRepository.findById(userId).get());
-//        return UserMapper.toUserDto(userRepository.getUser(userId));
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return UserMapper.toUserDto(user.get());
+        }
+        throw new UserNotFoundException("Пользователя с id " + userId + " не зарегестрирован");
     }
 
     public List<UserDto> getUsers() {
         return userRepository.findAll().stream()
-//        return userRepository.getUsers().stream()
                 .map(UserMapper::toUserDto)
                 .collect(Collectors.toList());
     }
-
+    @Transactional
     public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
-//        userRepository.deleteUser(userId);
+        User user = UserMapper.toUser(getUser(userId));
+        userRepository.delete(user);
     }
 
 }

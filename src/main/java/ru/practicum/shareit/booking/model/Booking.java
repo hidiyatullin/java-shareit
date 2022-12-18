@@ -1,7 +1,7 @@
-package ru.practicum.shareit.booking;
+package ru.practicum.shareit.booking.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import ru.practicum.shareit.booking.BookingState;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
@@ -14,23 +14,30 @@ import java.time.LocalDateTime;
  * TODO Sprint add-bookings.
  */
 @Entity
+@Builder
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "bookings")
 public class Booking {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @FutureOrPresent
+    @Column(name = "start_date")
     private LocalDateTime start;
     @Future
+    @Column(name = "end_date")
     private LocalDateTime end;
-    @ManyToOne
+    @OneToOne(orphanRemoval = true, cascade = {CascadeType.ALL})
     @JoinColumn(name = "item_id")
     private Item item;
-    @ManyToOne
+    @OneToOne(orphanRemoval = true, cascade = {CascadeType.ALL})
     @JoinColumn(name = "booker_id")
     private User booker;
     @Enumerated
-    private BookingState status;
-
+    private Status status;
+    @Transient
+    private Boolean isApproved;
 }

@@ -24,12 +24,15 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "description", nullable = false, length = 100)
     private String description;
+    @Column(name = "is_available", nullable = false)
     private Boolean available;
-    @ManyToOne
-    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    @OneToOne(orphanRemoval = true, cascade = {CascadeType.ALL})
+    @JoinColumn(name = "owner_id")
     private User owner;
+    @Transient
     private String request;
 }

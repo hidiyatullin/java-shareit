@@ -68,5 +68,25 @@ public class ErrorHandler {
                 "errorMessage", e.getMessage()
         );
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> bookingNotFound(final BookingNotFoundException e) {
+        log.debug("404, {}", e.getMessage());
+        return Map.of(
+                "error", "Ошибка с параметром Booking.",
+                "errorMessage", e.getMessage()
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> validationException(final ValidationException e) {
+        log.debug("404, {}", e.getMessage());
+        return Map.of(
+                "error", e.getMessage()
+//                "errorMessage", e.getMessage()
+        );
+    }
 }
 

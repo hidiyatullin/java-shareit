@@ -1,13 +1,14 @@
 package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.Create;
 import ru.practicum.shareit.Update;
+import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.user.UserRepository;
+import ru.practicum.shareit.item.service.ItemService;
+import ru.practicum.shareit.item.service.ItemServiceImpl;
 
 import java.util.List;
 
@@ -19,11 +20,8 @@ import java.util.List;
 @RequestMapping("/items")
 public class ItemController {
 
-    private ItemServiceImpl itemService;
+    private final ItemServiceImpl itemService;
 
-    public ItemController(ItemServiceImpl itemService) {
-        this.itemService = itemService;
-    }
 
     @PostMapping
     ItemDto createItem(@RequestHeader("X-Sharer-User-Id") long userId,
@@ -50,5 +48,12 @@ public class ItemController {
     @GetMapping("/search")
     List<ItemDto> findItems(@RequestParam String text) {
         return itemService.findItems(text);
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentDto addComment(@Validated({Create.class}) @RequestHeader("X-Sharer-User-Id") Long authorId,
+                                 @PathVariable Long itemId,
+                                 @RequestBody CommentDto commentDto) {
+        return itemService.addComment(authorId, itemId, commentDto);
     }
 }

@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @ToString
 @Builder
+@EqualsAndHashCode(of = "id")
 public class UserDto {
     private Long id;
     @NotBlank(groups = {Create.class})
