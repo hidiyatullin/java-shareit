@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService {
                 .map(UserMapper::toUserDto)
                 .collect(Collectors.toList());
     }
+
     @Transactional
     public void deleteUser(Long userId) {
         User user = UserMapper.toUser(getUser(userId));
