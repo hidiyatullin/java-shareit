@@ -39,9 +39,6 @@ public class BookingServiceImpl implements BookingService {
         User userBooker = userRepository.findById(bookerId)
                 .orElseThrow(() -> new UserNotFoundException("Пользователя с id " + bookerId + " не зарегестрирован"));
         validBookingDate(bookingInputDto);
-//        if (bookingInputDto.getItemId() == null) {
-//            throw new ItemNotFoundException("Укажите предмет для бронирования");
-//        }
         Long itemId = bookingInputDto.getItemId();
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ItemNotFoundException("Вещь с id " + itemId + " не найдена"));
@@ -55,6 +52,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = BookingMapper.toBooking(bookingInputDto);
         booking.setBooker(userBooker);
         booking.setItem(item);
+        log.info("Преобразовали BookingInputDto в Booking");
         return BookingMapper.toDto(bookingRepository.save(booking));
     }
 
@@ -78,11 +76,11 @@ public class BookingServiceImpl implements BookingService {
                 bookings = bookingRepository.findAllByBookerIdAndStartAfterOrderByStartDesc(userId, LocalDateTime.now());
                 break;
             case WAITING:
-                bookings = bookingRepository.findAllByBookerIdState(userId, Status.WAITING.toString());
+                bookings = bookingRepository.findAllByBookerIdStateWaiting(userId);
                 log.info("ServiceImpl " + bookings);
                 break;
             case REJECTED:
-                bookings = bookingRepository.findAllByBookerIdState(userId, Status.REJECTED.toString());
+                bookings = bookingRepository.findAllByBookerIdStateRejected(userId);
                 break;
         }
         if (bookings != null) {

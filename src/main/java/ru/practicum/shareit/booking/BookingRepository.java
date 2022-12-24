@@ -23,9 +23,16 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @Query(nativeQuery = true,
             value = "select * from BOOKINGS as b " +
-                    " where b.BOOKER_ID = ?1 and b.STATUS = ?2 " +
+                    " where b.BOOKER_ID = ?1 and b.STATUS = 'WAITING' " +
                     "order by b.START_DATE desc ")
-    List<Booking> findAllByBookerIdState(Long userId, String status);
+    List<Booking> findAllByBookerIdStateWaiting(Long userId);
+
+    @Query(nativeQuery = true,
+            value = "select * from BOOKINGS as b " +
+                    " where b.BOOKER_ID = ?1 and b.STATUS = 'REJECTED' " +
+                    "order by b.START_DATE desc ")
+    List<Booking> findAllByBookerIdStateRejected(Long userId);
+
 
     @Query(nativeQuery = true,
             value = "select * from BOOKINGS as b " +

@@ -34,14 +34,14 @@ public class BookingController {
     public List<BookingDto> getAllforBooker(@RequestHeader("X-Sharer-User-Id") Long userId,
                                             @RequestParam(name = "state", defaultValue = "ALL") String state) {
         log.info("Запрос на получить все бронирования для арендатора создан");
-//        BookingState bookingState;
-//        try {
-//            bookingState = BookingState.valueOf(state);
-//        } catch (IllegalArgumentException e) {
-//            throw new ValidationException("Unknown state: " + state);
-//        }
-        BookingState bookingState = BookingState.from(state)
-                .orElseThrow(() -> new ValidationException("Unknown state: " + state));
+        BookingState bookingState;
+        try {
+            bookingState = BookingState.valueOf(state);
+        } catch (IllegalArgumentException e) {
+            throw new ValidationException("Unknown state: " + state);
+        }
+//        BookingState bookingState = BookingState.valueOf(state)
+//                .orElseThrow(() -> new ValidationException("Unknown state: " + state));
         log.info("Пользователь " + userId + " " + bookingState);
         log.info("Список " + bookingService.getAllByBooker(userId, bookingState));
         return bookingService.getAllByBooker(userId, bookingState);

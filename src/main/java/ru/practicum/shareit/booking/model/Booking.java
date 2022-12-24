@@ -29,13 +29,14 @@ public class Booking {
     @Future
     @Column(name = "end_date")
     private LocalDateTime end;
-    @OneToOne(orphanRemoval = true, cascade = {CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
     @OneToOne(orphanRemoval = true, cascade = {CascadeType.ALL})
     @JoinColumn(name = "booker_id")
     private User booker;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private Status status;
     @Transient
     private Boolean isApproved;
