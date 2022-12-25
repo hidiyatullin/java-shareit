@@ -30,7 +30,7 @@ public class Item {
     private String description;
     @Column(name = "is_available", nullable = false)
     private Boolean available;
-    @OneToOne(orphanRemoval = true, cascade = {CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
     @Transient

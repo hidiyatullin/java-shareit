@@ -32,7 +32,7 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
-    @OneToOne(orphanRemoval = true, cascade = {CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name = "booker_id")
     private User booker;
     @Enumerated(EnumType.STRING)

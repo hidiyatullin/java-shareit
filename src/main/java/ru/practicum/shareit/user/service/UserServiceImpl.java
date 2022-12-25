@@ -7,7 +7,7 @@ import ru.practicum.shareit.Exeption.UserNotFoundException;
 import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.model.UserMapper;
+import ru.practicum.shareit.user.mapper.UserMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
+    @Override
     public UserDto updateUser(UserDto userDto, long userId) {
         User user = UserMapper.toUser(userDto);
         User oldUser = UserMapper.toUser(getUser(userId));
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toUserDto(userRepository.save(oldUser));
     }
 
+    @Override
     public UserDto getUser(Long userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
@@ -48,6 +50,7 @@ public class UserServiceImpl implements UserService {
         throw new UserNotFoundException("Пользователя с id " + userId + " не зарегестрирован");
     }
 
+    @Override
     public List<UserDto> getUsers() {
         return userRepository.findAll()
                 .stream()
@@ -56,6 +59,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
+    @Override
     public void deleteUser(Long userId) {
         User user = UserMapper.toUser(getUser(userId));
         userRepository.delete(user);
