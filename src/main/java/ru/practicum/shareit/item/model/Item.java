@@ -1,16 +1,12 @@
 package ru.practicum.shareit.item.model;
 
-
 import lombok.*;
+import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.Entity;
 
 import javax.persistence.*;
-
-/**
- * TODO Sprint add-controllers.
- */
 
 @Entity
 @Table(name = "items")
@@ -33,6 +29,7 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
-    @Transient
-    private String request;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "request_id")
+    private ItemRequest itemRequest;
 }

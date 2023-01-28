@@ -1,6 +1,8 @@
 package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.Exeption.IncorrectUserOfItemException;
@@ -17,6 +19,7 @@ import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.mapper.CommentMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.mapper.ItemMapper;
+import ru.practicum.shareit.request.ItemRequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.UserRepository;
 
@@ -34,6 +37,7 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
+    private final ItemRequestRepository itemRequestRepository;
 
 
     @Override
@@ -41,6 +45,9 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto createItem(ItemDto itemDto, long userId) {
         User owner = userRepository.findById(userId).get();
         Item item = ItemMapper.toItem(itemDto, owner);
+        if (itemDto.getRequestId() != null) {
+            item.setItemRequest(itemRequestRepository.findById(itemDto.getRequestId()).get());
+        }
         return ItemMapper.toItemDto(itemRepository.save(item));
     }
 
@@ -51,19 +58,19 @@ public class ItemServiceImpl implements ItemService {
         if (oldItem.getOwner().getId() != userId) {
             throw new IncorrectUserOfItemException("Неверный пользователь");
         }
-            if (itemDto.getName() != null) {
-                oldItem.setName(itemDto.getName());
-            }
-            if (itemDto.getDescription() != null) {
-                oldItem.setDescription(itemDto.getDescription());
-            }
-            if (itemDto.getAvailable() != null) {
-                oldItem.setAvailable(itemDto.getAvailable());
-            }
-            if (itemDto.getRequest() != null) {
-                oldItem.setRequest(itemDto.getRequest());
-            }
-            return ItemMapper.toItemDto(itemRepository.save(oldItem));
+        if (itemDto.getName() != null) {
+            oldItem.setName(itemDto.getName());
+        }
+        if (itemDto.getDescription() != null) {
+            oldItem.setDescription(itemDto.getDescription());
+        }
+        if (itemDto.getAvailable() != null) {
+            oldItem.setAvailable(itemDto.getAvailable());
+        }
+        if (itemDto.getRequestId() != null) {
+            oldItem.setItemRequest(itemRequestRepository.findById(itemDto.getRequestId()).get());
+        }
+        return ItemMapper.toItemDto(itemRepository.save(oldItem));
     }
 
     @Override
@@ -106,8 +113,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getItems(long userId) {
-        List<ItemDto> itemDtos = itemRepository.findAll().stream()
+    public List<ItemDto> getItems(long userId, Integer from, Integer size) {
+        if (from < 0 || size <= 0) {
+            throw new ValidationException("не верно указан количество позиций на странице");
+        }
+        int page = from / size;
+        Sort sortByName = Sort.by(Sort.Direction.DESC, "name");
+        final PageRequest pageRequest = PageRequest.of(page, size, sortByName);
+        List<ItemDto> itemDtos = itemRepository.findAll(pageRequest)
+                .stream()
                 .filter(item -> Objects.equals(item.getOwner().getId(), userId))
                 .map(ItemMapper::toItemDto)
                 .sorted(Comparator.comparing(ItemDto::getId))
@@ -158,11 +172,17 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> findItems(String text) {
+    public List<ItemDto> findItems(String text, Integer from, Integer size) {
+        if (from < 0 || size <= 0) {
+            throw new ValidationException("не верно указан количество позиций на странице");
+        }
+        int page = from / size;
+        Sort sortByName = Sort.by(Sort.Direction.ASC, "name");
+        final PageRequest pageRequest = PageRequest.of(page, size, sortByName);
         if (text.isBlank()) {
             return new ArrayList<>();
         }
-        return itemRepository.findByDescriptionContainingIgnoreCase(text)
+        return itemRepository.findByDescriptionContainingIgnoreCase(text, pageRequest)
                 .stream()
                 .filter(Item::getAvailable)
                 .map(ItemMapper::toItemDto)
@@ -179,7 +199,7 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new UserNotFoundException("нет такого пользователя"));
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ItemNotFoundException("нет такого пользователя"));
-        bookingRepository.findAllByBookerIdAndEndBeforeOrderByIdDesc(authorId, LocalDateTime.now())
+        bookingRepository.findAllByBookerIdAndEndBeforeOrderByIdDesc(authorId, LocalDateTime.now(), null)
                 .stream()
                 .findFirst()
                 .orElseThrow(() -> new ValidationException("Пользователь с id " +

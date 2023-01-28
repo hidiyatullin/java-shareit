@@ -9,9 +9,6 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
 import java.time.LocalDateTime;
 
-/**
- * TODO Sprint add-bookings.
- */
 @Entity
 @Builder
 @Setter
@@ -23,10 +20,8 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @FutureOrPresent
     @Column(name = "start_date")
     private LocalDateTime start;
-    @Future
     @Column(name = "end_date")
     private LocalDateTime end;
     @ManyToOne

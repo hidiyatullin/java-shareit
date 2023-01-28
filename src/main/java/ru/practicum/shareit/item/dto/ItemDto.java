@@ -33,7 +33,7 @@ public class ItemDto {
     private String description;
     @NotNull(groups = Create.class)
     private Boolean available;
-    private String request;
+    private Long requestId;
     private BookingDto lastBooking;
     private BookingDto nextBooking;
     private List<CommentDto> comments = new ArrayList<>();

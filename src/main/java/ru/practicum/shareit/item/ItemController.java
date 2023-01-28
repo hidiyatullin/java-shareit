@@ -7,46 +7,47 @@ import ru.practicum.shareit.Create;
 import ru.practicum.shareit.Update;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.service.ItemServiceImpl;
+import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/items")
 public class ItemController {
 
-    private final ItemServiceImpl itemService;
+    private final ItemService itemService;
 
 
     @PostMapping
-    ItemDto createItem(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ItemDto createItem(@RequestHeader("X-Sharer-User-Id") long userId,
                        @Validated({Create.class}) @RequestBody ItemDto itemDto) {
         return itemService.createItem(itemDto, userId);
     }
 
     @PatchMapping("/{itemId}")
-    ItemDto updateItem(@PathVariable Long itemId, @RequestHeader("X-Sharer-User-Id") long userId,
+    public ItemDto updateItem(@PathVariable Long itemId, @RequestHeader("X-Sharer-User-Id") long userId,
                        @Validated({Update.class}) @RequestBody ItemDto itemDto) {
         return itemService.updateItem(itemDto, itemId, userId);
     }
 
     @GetMapping("/{itemId}")
-    ItemDto getItem(@PathVariable Long itemId, @RequestHeader("X-Sharer-User-Id") long userId) {
+    public ItemDto getItem(@PathVariable Long itemId, @RequestHeader("X-Sharer-User-Id") long userId) {
         return itemService.getItem(itemId, userId);
     }
 
     @GetMapping
-    List<ItemDto> getItems(@RequestHeader("X-Sharer-User-Id") long userId) {
-        return itemService.getItems(userId);
+    public List<ItemDto> getItems(@RequestHeader("X-Sharer-User-Id") long userId,
+                           @RequestParam(name = "from", defaultValue = "0") int from,
+                           @RequestParam(name = "size", defaultValue = "10") int size) {
+        return itemService.getItems(userId, from, size);
     }
 
     @GetMapping("/search")
-    List<ItemDto> findItems(@RequestParam String text) {
-        return itemService.findItems(text);
+    public List<ItemDto> findItems(@RequestParam String text,
+                            @RequestParam(name = "from", defaultValue = "0") int from,
+                            @RequestParam(name = "size", defaultValue = "10") int size) {
+        return itemService.findItems(text, from, size);
     }
 
     @PostMapping("/{itemId}/comment")

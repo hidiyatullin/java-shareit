@@ -2,6 +2,7 @@ package ru.practicum.shareit.Exeption;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -82,11 +83,18 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> validationException(final ValidationException e) {
-        log.debug("404, {}", e.getMessage());
+        log.debug("400, {}", e.getMessage());
         return Map.of(
                 "error", e.getMessage()
-//                "errorMessage", e.getMessage()
         );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Map<String, String>> handleAllIllegal(final NolegalArgumentException nL) {
+        log.warn("500 {}", nL.getMessage(), nL);
+        return new ResponseEntity<>(
+                Map.of("error", nL.getMessage()),
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
 

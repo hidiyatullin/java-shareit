@@ -11,10 +11,6 @@ import ru.practicum.shareit.booking.service.BookingService;
 import javax.validation.Valid;
 import java.util.List;
 
-
-/**
- * TODO Sprint add-bookings.
- */
 @RestController
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
@@ -32,7 +28,9 @@ public class BookingController {
 
     @GetMapping
     public List<BookingDto> getAllforBooker(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                            @RequestParam(name = "state", defaultValue = "ALL") String state) {
+                                            @RequestParam(name = "state", defaultValue = "ALL") String state,
+                                            @RequestParam(name = "from", defaultValue = "0") int from,
+                                            @RequestParam(name = "size", defaultValue = "10") int size) {
         log.info("Запрос на получить все бронирования для арендатора создан");
         BookingState bookingState;
         try {
@@ -40,20 +38,20 @@ public class BookingController {
         } catch (IllegalArgumentException e) {
             throw new ValidationException("Unknown state: " + state);
         }
-//        BookingState bookingState = BookingState.valueOf(state)
-//                .orElseThrow(() -> new ValidationException("Unknown state: " + state));
         log.info("Пользователь " + userId + " " + bookingState);
-        log.info("Список " + bookingService.getAllByBooker(userId, bookingState));
-        return bookingService.getAllByBooker(userId, bookingState);
+        log.info("Список " + bookingService.getAllByBooker(userId, bookingState, from, size));
+        return bookingService.getAllByBooker(userId, bookingState, from, size);
     }
 
     @GetMapping("/owner")
     public List<BookingDto> getAllForOwner(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                           @RequestParam(name = "state", defaultValue = "ALL") String state) {
+                                           @RequestParam(name = "state", defaultValue = "ALL") String state,
+                                           @RequestParam(name = "from", defaultValue = "0") int from,
+                                           @RequestParam(name = "size", defaultValue = "10") int size) {
         BookingState bookingState = BookingState.from(state)
                 .orElseThrow(() -> new ValidationException("Unknown state: " + state));
         log.info("Запрос на получить все бронирования для арендодателя создан");
-        return bookingService.getAllByOwner(userId, bookingState);
+        return bookingService.getAllByOwner(userId, bookingState, from, size);
     }
 
     @GetMapping("/{bookingId}")
