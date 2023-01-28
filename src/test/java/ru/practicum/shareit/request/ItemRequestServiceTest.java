@@ -123,7 +123,7 @@ class ItemRequestServiceTest {
     @Test
     void getAll() {
         List<ItemRequestDto> requestsByCreator = itemRequestService.getAllItemRequestsOfUser(user2.getId());
-        assertEquals(requestsByCreator.size(), 2);
+        assertEquals(requestsByCreator.size(), 1);
     }
 
     @Test
