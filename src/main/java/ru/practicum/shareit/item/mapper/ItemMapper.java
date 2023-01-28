@@ -13,7 +13,7 @@ public class ItemMapper {
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.getAvailable())
-                .requestId(item.getItemRequest()!= null? item.getItemRequest().getId() : null)
+                .requestId(item.getItemRequest() != null ? item.getItemRequest().getId() : null)
                 .lastBooking(new ItemDto.BookingDto())
                 .nextBooking(new ItemDto.BookingDto())
                 .comments(new ArrayList<>())
