@@ -38,7 +38,7 @@ class BookingControllerTest {
     }
 
     @BeforeEach
-    void start() {
+    public void start() {
         itemDto1 = new ItemDto(1L, "itemDtoName1", "itemDtoDescription1",
                 true, null, null, null, null);
         userDto1 = new UserDto(1L, "user1", "user1@user1.ru");
@@ -54,18 +54,18 @@ class BookingControllerTest {
     }
 
     @Test
-    void create() {
+    public void create() {
         assertEquals(bookingInputDto1.getId(), bookingDtoNew.getId());
     }
 
     @Test
-    void getAllforBooker() {
+    public void getAllforBooker() {
         assertEquals(1, bookingController.getAllforBooker(userDto2.getId(),
                 "FUTURE", 1, 10).size());
     }
 
     @Test
-    void getAllforBookerUnknownState() {
+    public void getAllforBookerUnknownState() {
         final ValidationException exception = assertThrows(ValidationException.class,
                 () -> bookingController.getAllforBooker(userDto2.getId(), "Unknown", 1, 10).size());
 
@@ -73,17 +73,17 @@ class BookingControllerTest {
     }
 
     @Test
-    void getAllforOwner() {
+    public void getAllforOwner() {
         assertEquals(1, bookingController.getAllForOwner(userDto1.getId(), "FUTURE", 1, 10).size());
     }
 
     @Test
-    void getById() {
+    public void getById() {
         assertEquals(1L, bookingController.getById(bookingInputDto1.getId(), userDto2.getId()).getId());
     }
 
     @Test
-    void update() {
+    public void update() {
         BookingDto bookingDtoUpdate = bookingController.update(bookingInputDto1.getId(), userDto1.getId(), true);
         assertNotNull(bookingDtoUpdate);
     }

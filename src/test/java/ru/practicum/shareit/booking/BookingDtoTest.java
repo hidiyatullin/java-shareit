@@ -26,7 +26,7 @@ class BookingDtoTest {
     ObjectMapper mapper;
 
     @Test
-    void testBookingDto() throws Exception {
+    public void testBookingDto() throws Exception {
         LocalDateTime startBooking = LocalDateTime.now().plusDays(7);
         LocalDateTime endBooking = LocalDateTime.now().plusDays(10);
         mapper.registerModule(new JavaTimeModule());

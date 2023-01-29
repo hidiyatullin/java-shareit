@@ -70,7 +70,7 @@ class ItemRequestServiceTest {
     }
 
     @BeforeEach
-    void start() {
+    public void start() {
         LocalDateTime startLastBooking = LocalDateTime.now().minusDays(7);
         LocalDateTime endLastBooking = LocalDateTime.now().minusDays(3);
         LocalDateTime startNextBooking = LocalDateTime.now().plusDays(3);
@@ -109,37 +109,37 @@ class ItemRequestServiceTest {
     }
 
     @Test
-    void create() {
+    public void create() {
         assertEquals(requestDtoNew.getId(), itemRequest1.getId());
     }
 
     @Test
-    void createWrongUser() {
+    public void createWrongUser() {
         final UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> itemRequestService.create(itemRequestDto1, 99L));
         assertEquals("Нет такого пользователя", exception.getMessage());
     }
 
     @Test
-    void getAll() {
+    public void getAll() {
         List<ItemRequestDto> requestsByCreator = itemRequestService.getAllItemRequestsOfUser(user2.getId());
         assertEquals(requestsByCreator.size(), 1);
     }
 
     @Test
-    void getById() {
+    public void getById() {
         ItemRequestDto itemRequestDtoNew = itemRequestService.getByRequestId(user2.getId(), itemRequest1.getId());
         assertEquals(itemRequestDtoNew.getId(), itemRequest1.getId());
     }
 
     @Test
-    void getAllByPage() {
+    public void getAllByPage() {
         List<ItemRequestDto> requestsByCreator = itemRequestService.getAllItemRequests(user1.getId(), 1, 10);
         assertEquals(requestsByCreator.size(), 1);
     }
 
     @Test
-    void getAllByPageWithWrong() {
+    public void getAllByPageWithWrong() {
         final ValidationException exception = assertThrows(ValidationException.class,
                 () -> itemRequestService.getAllItemRequests(user1.getId(), -1, -10));
         assertEquals("не верно указан количество позиций на странице", exception.getMessage());

@@ -83,7 +83,7 @@ class ItemServiceTest {
     }
 
     @BeforeEach
-    void start() {
+    public void start() {
         LocalDateTime startLastBooking = LocalDateTime.now().minusDays(7);
         LocalDateTime endLastBooking = LocalDateTime.now().minusDays(3);
         LocalDateTime startNextBooking = LocalDateTime.now().plusDays(3);
@@ -118,19 +118,19 @@ class ItemServiceTest {
     }
 
     @Test
-    void create() {
+    public void create() {
         assertEquals(itemDtoNew.getId(), itemDto1.getId());
     }
 
     @Test
-    void addCommentWithoutBookingByUser() {
+    public void addCommentWithoutBookingByUser() {
         final ValidationException exception = assertThrows(ValidationException.class,
                 () -> itemService.addComment(user2.getId(), itemDtoNew.getId(), commentDto1));
         assertEquals("Пользователь с id 2не бронировал вещь с id 1", exception.getMessage());
     }
 
     @Test
-    void addComment() {
+    public void addComment() {
         BookingInputDto bookingInputDto3 = new BookingInputDto(3L, item1.getId(), LocalDateTime.now().minusDays(20),
                 LocalDateTime.now().minusDays(4));
         Booking booking3 = BookingMapper.toBooking(bookingInputDto3);
@@ -141,7 +141,7 @@ class ItemServiceTest {
     }
 
     @Test
-    void addCommentWithoutText() {
+    public void addCommentWithoutText() {
         commentDto1.setText("");
         final ValidationException exception = assertThrows(ValidationException.class,
                 () -> itemService.addComment(user2.getId(), itemDtoNew.getId(), commentDto1));
@@ -149,7 +149,7 @@ class ItemServiceTest {
     }
 
     @Test
-    void getAll() {
+    public void getAll() {
         BookingInputDto bookingInputDto3 = new BookingInputDto(3L, item1.getId(), LocalDateTime.now().minusDays(20),
                 LocalDateTime.now().minusDays(4));
         Booking booking3 = BookingMapper.toBooking(bookingInputDto3);
@@ -160,14 +160,14 @@ class ItemServiceTest {
     }
 
     @Test
-    void getAllWithWrong() {
+    public void getAllWithWrong() {
         final ValidationException exception = assertThrows(ValidationException.class,
                 () -> itemService.getItems(user1.getId(), -1, -2));
         assertEquals(exception.getMessage(), "не верно указан количество позиций на странице");
     }
 
     @Test
-    void getById() {
+    public void getById() {
         BookingInputDto bookingInputDto3 = new BookingInputDto(3L, item1.getId(), LocalDateTime.now().minusDays(20),
                 LocalDateTime.now().minusDays(4));
         Booking booking3 = BookingMapper.toBooking(bookingInputDto3);
@@ -178,7 +178,7 @@ class ItemServiceTest {
     }
 
     @Test
-    void getByIdWithWrongItemId() {
+    public void getByIdWithWrongItemId() {
         final ItemNotFoundException exception = assertThrows(ItemNotFoundException.class,
                 () -> itemService.getItem(99L, user1.getId()).getId());
 
@@ -186,33 +186,33 @@ class ItemServiceTest {
     }
 
     @Test
-    void update() {
+    public void update() {
         ItemDto itemDtoNew = new ItemDto(1L, "updateItemDto", null, true, null, null, null, null);
         ItemDto itemDtoupdate = itemService.updateItem(itemDtoNew, user1.getId(), item1.getId());
         assertEquals(itemDtoupdate.getName(), "updateItemDto");
     }
 
     @Test
-    void updateWithEmtyItem() {
+    public void updateWithEmtyItem() {
         ItemDto itemDtoNew = new ItemDto(1L, null, "updateDescription", null, null, null, null, null);
         ItemDto itemDtoupdate = itemService.updateItem(itemDtoNew, user1.getId(), item1.getId());
         assertEquals(itemDtoupdate.getDescription(), "updateDescription");
     }
 
     @Test
-    void search() {
+    public void search() {
         List<ItemDto> itemDescriptionAfterSearch = itemService.findItems("itemdescrip", 1, 10);
         assertEquals(itemDescriptionAfterSearch.size(), 1);
     }
 
     @Test
-    void searchWithEmptyText() {
+    public void searchWithEmptyText() {
         List<ItemDto> itemDescriptionAfterSearch = itemService.findItems("", 1, 10);
         assertEquals(itemDescriptionAfterSearch.size(), 0);
     }
 
     @Test
-    void searchWithWrongPage() {
+    public void searchWithWrongPage() {
         final ValidationException exception = assertThrows(ValidationException.class,
                 () -> itemService.findItems("itemdescrip", -1, -10));
         assertEquals("не верно указан количество позиций на странице", exception.getMessage());

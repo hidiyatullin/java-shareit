@@ -39,7 +39,7 @@ class ItemControllerTest {
     }
 
     @BeforeEach
-    void start() {
+    public void start() {
         userDto1 = new UserDto(1L, "user1", "user1@user1.ru");
         userDto2 = new UserDto(2L, "user2", "user1@user2.ru");
         itemDto1 = new ItemDto(1L, "nameItemDto", "descriptionItem",
@@ -55,12 +55,12 @@ class ItemControllerTest {
     }
 
     @Test
-    void create() {
+    public void create() {
         assertNotNull(itemDtoTest);
     }
 
     @Test
-    void update() {
+    public void update() {
         ItemDto itemDtoUpdate = new ItemDto(2L, "itemUpdate", null, null,
                 null, null, null, null);
         ItemDto update = itemController.updateItem(itemDto1.getId(), userDto1.getId(), itemDtoUpdate);
@@ -68,25 +68,25 @@ class ItemControllerTest {
     }
 
     @Test
-    void getAll() {
+    public void getAll() {
         List<ItemDto> items = itemController.getItems(userDto1.getId(), 1, 10);
         assertEquals(1, items.size());
     }
 
     @Test
-    void getById() {
+    public void getById() {
         ItemDto itemDto = itemController.getItem(userDto1.getId(), itemDto1.getId());
         assertEquals(1, itemDto.getId());
     }
 
     @Test
-    void search() {
+    public void search() {
         List<ItemDto> items = itemController.findItems("descriptionIt", 1, 10);
         assertEquals(1, items.size());
     }
 
     @Test
-    void addComment() {
+    public void addComment() {
         CommentDto commentDto = itemController.addComment(userDto2.getId(), itemDto1.getId(), commentDto1);
         assertNotNull(commentDto);
     }

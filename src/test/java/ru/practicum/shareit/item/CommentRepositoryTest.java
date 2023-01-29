@@ -38,7 +38,7 @@ class CommentRepositoryTest {
     }
 
     @BeforeEach
-    void start() {
+    public void start() {
         user1 = new User(1L, "user1", "user1@email.ru");
         item1 = new Item(1L, "itemName1", "descriptionItem1", true, user1, null);
         comment1 = new Comment(1L, "textComment1", item1, user1, LocalDateTime.now());
@@ -48,7 +48,7 @@ class CommentRepositoryTest {
     }
 
     @Test
-    void findAllByItemId() {
+    public void findAllByItemId() {
         TypedQuery<Comment> query = em.getEntityManager()
                 .createQuery("Select c from Comment c join Item i on c.item.id = i.id where c.item.id = :itemId", Comment.class);
         Comment comment = query.setParameter("itemId", comment1.getId()).getSingleResult();

@@ -51,7 +51,7 @@ class BookingControllerTestMockMvc {
     }
 
     @BeforeEach
-    void start() {
+    public void start() {
         user1 = User.builder()
                 .id(1L)
                 .name("user1")
@@ -113,7 +113,7 @@ class BookingControllerTestMockMvc {
     }
 
     @Test
-    void create() throws Exception {
+    public void create() throws Exception {
         when(bookingService.create(any(), anyLong()))
                 .thenReturn(bookingDto1);
 
@@ -131,7 +131,7 @@ class BookingControllerTestMockMvc {
     }
 
     @Test
-    void getAllforBooker() throws Exception {
+    public void getAllforBooker() throws Exception {
         when(bookingService.getAllByBooker(anyLong(), any(), anyInt(), anyInt()))
                 .thenReturn(List.of(bookingDto1));
 
@@ -145,7 +145,7 @@ class BookingControllerTestMockMvc {
     }
 
     @Test
-    void getAllforBookerWrongState() throws Exception {
+    public void getAllforBookerWrongState() throws Exception {
         when(bookingService.getAllByBooker(anyLong(), any(), anyInt(), anyInt()))
                 .thenReturn(List.of(bookingDto1));
 
@@ -158,7 +158,7 @@ class BookingControllerTestMockMvc {
     }
 
     @Test
-    void getAllforOwner() throws Exception {
+    public void getAllforOwner() throws Exception {
         when(bookingService.getAllByOwner(anyLong(), any(), anyInt(), anyInt()))
                 .thenReturn(List.of(bookingDto1));
 
@@ -172,7 +172,7 @@ class BookingControllerTestMockMvc {
     }
 
     @Test
-    void getById() throws Exception {
+    public void getById() throws Exception {
         when(bookingService.getById(anyLong(), anyLong()))
                 .thenReturn(bookingDto1);
 
@@ -186,7 +186,7 @@ class BookingControllerTestMockMvc {
     }
 
     @Test
-    void getByIdWrongRequest() throws Exception {
+    public void getByIdWrongRequest() throws Exception {
         when(bookingService.getById(anyLong(), anyLong()))
                 .thenReturn(bookingDto1);
 
@@ -199,7 +199,7 @@ class BookingControllerTestMockMvc {
     }
 
     @Test
-    void update() throws Exception {
+    public void update() throws Exception {
         when(bookingService.update(anyLong(), anyLong(), anyBoolean()))
                 .thenReturn(bookingDto1);
 

@@ -29,19 +29,19 @@ class UserControllerTest {
     }
 
     @BeforeEach
-    void start() {
+    public void start() {
         userDto1 = new UserDto(1L, "user1", "user1@user1.ru");
         userDto2 = new UserDto(2L, "user2", "user1@user2.ru");
     }
 
     @Test
-    void create() {
+    public void create() {
         UserDto userDtoNew1 = userController.createUser(userDto1);
         assertEquals(userDto1.getName(), userDtoNew1.getName());
     }
 
     @Test
-    void getAll() {
+    public void getAll() {
         userController.createUser(userDto1);
         userController.createUser(userDto2);
         List<UserDto> userDtos = userController.getUsers();
@@ -49,7 +49,7 @@ class UserControllerTest {
     }
 
     @Test
-    void getById() {
+    public void getById() {
         UserDto userDtoNew1 = userController.createUser(userDto1);
         UserDto userDtoNew2 = userController.createUser(userDto2);
         UserDto userDtoNew = userController.getUser(1L);
@@ -57,14 +57,14 @@ class UserControllerTest {
     }
 
     @Test
-    void update() {
+    public void update() {
         UserDto userDtoNew1 = userController.createUser(userDto1);
         userDtoNew1 = userController.updateUser(1L, userDto2);
         assertEquals(userDtoNew1.getName(), userDto2.getName());
     }
 
     @Test
-    void delete() {
+    public void delete() {
         UserDto userDtoNew1 = userController.createUser(userDto1);
         UserDto userDtoNew2 = userController.createUser(userDto2);
         userController.deleteUser(1L);

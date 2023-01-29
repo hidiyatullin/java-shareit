@@ -28,7 +28,7 @@ class ItemDtoTest {
     }
 
     @Test
-    void testItemDto() throws Exception {
+    public void testItemDto() throws Exception {
         LocalDateTime startLastBooking = LocalDateTime.now().minusDays(7);
         LocalDateTime endLastBooking = LocalDateTime.now().minusDays(3);
         LocalDateTime startNextBooking = LocalDateTime.now().plusDays(3);

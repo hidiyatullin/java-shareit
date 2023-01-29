@@ -1,18 +1,18 @@
 package ru.practicum.shareit.item;
 
 import org.junit.jupiter.api.BeforeEach;
-        import org.junit.jupiter.api.Test;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-        import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-        import org.springframework.test.annotation.DirtiesContext;
-        import ru.practicum.shareit.item.model.Item;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.annotation.DirtiesContext;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.model.User;
 
-        import javax.persistence.TypedQuery;
+import javax.persistence.TypedQuery;
 
-        import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @DataJpaTest
@@ -34,7 +34,7 @@ class ItemRepositoryTest {
     }
 
     @BeforeEach
-    void start() {
+    public void start() {
         user1 = new User(1L, "user1", "user1@email.ru");
         item1 = new Item(1L, "itemName1", "descriptionItem1", true, user1, null);
 
@@ -43,7 +43,7 @@ class ItemRepositoryTest {
     }
 
     @Test
-    void findByDescriptionContainingIgnoreCase() {
+    public void findByDescriptionContainingIgnoreCase() {
         TypedQuery<Item> query = em.getEntityManager()
                 .createQuery("Select i from Item i where i.description = :description", Item.class);
         Item itemNew = query.setParameter("description", item1.getDescription()).getSingleResult();
@@ -51,7 +51,7 @@ class ItemRepositoryTest {
     }
 
     @Test
-    void findByIdRequest() {
+    public void findByIdRequest() {
         TypedQuery<Item> query = em.getEntityManager()
                 .createQuery("Select i from Item i where i.id = :id", Item.class);
         Item itemNew = query.setParameter("id", item1.getId()).getSingleResult();

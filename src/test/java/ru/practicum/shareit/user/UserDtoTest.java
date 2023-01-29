@@ -20,7 +20,7 @@ class UserDtoTest {
     }
 
     @Test
-    void testUserDto() throws Exception {
+    public void testUserDto() throws Exception {
         UserDto userDto = new UserDto(1L, "userName", "user@Email");
         JsonContent<UserDto> result = json.write(userDto);
         assertThat(result).extractingJsonPathNumberValue("$.id").isEqualTo(userDto.getId().intValue());

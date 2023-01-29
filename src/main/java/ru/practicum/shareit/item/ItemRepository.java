@@ -4,6 +4,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
@@ -18,4 +19,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             value = "select * from ITEMS as i " +
                     "where i.REQUEST_ID =?1 ")
     List<Item> findByIdRequest(Long idRequest);
+
+    @Query(nativeQuery = true,
+            value = "select * from ITEMS as i " +
+                    "where i.REQUEST_ID in (:ids) ")
+    List<Item> findByRequest_IdIn(List<Long> ids);
 }

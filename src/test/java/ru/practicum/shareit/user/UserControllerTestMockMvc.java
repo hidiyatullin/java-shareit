@@ -46,13 +46,13 @@ class UserControllerTestMockMvc {
     }
 
     @BeforeEach
-    void start() {
+    public void start() {
         userDto1 = new UserDto(1L, "user1", "user1@email.ru");
         userDto2 = new UserDto(2L, "user2", "user2@email.ru");
     }
 
     @Test
-    void create() throws Exception {
+    public void create() throws Exception {
         when(userService.createUser(any()))
                 .thenReturn(userDto1);
 
@@ -71,7 +71,7 @@ class UserControllerTestMockMvc {
     }
 
     @Test
-    void createWrongRequst() throws Exception {
+    public void createWrongRequst() throws Exception {
         UserDto userDto3 = new UserDto();
         when(userService.createUser(any()))
                 .thenReturn(userDto3);
@@ -88,7 +88,7 @@ class UserControllerTestMockMvc {
     }
 
     @Test
-    void getAll() throws Exception {
+    public void getAll() throws Exception {
         when(userService.getUsers())
                 .thenReturn(List.of(userDto1, userDto2));
 
@@ -104,7 +104,7 @@ class UserControllerTestMockMvc {
     }
 
     @Test
-    void getById() throws Exception {
+    public void getById() throws Exception {
         when(userService.getUser(any()))
                 .thenReturn(userDto1);
 
@@ -123,7 +123,7 @@ class UserControllerTestMockMvc {
     }
 
     @Test
-    void update() throws Exception {
+    public void update() throws Exception {
         when(userService.updateUser(userDto2, userDto1.getId()))
                 .thenReturn(userDto2);
 
@@ -142,7 +142,7 @@ class UserControllerTestMockMvc {
     }
 
     @Test
-    void getByIdWithException() throws Exception {
+    public void getByIdWithException() throws Exception {
         UserDto userDto99 = new UserDto(99L, "user99", "user99@mail.ru");
 
         when(userService.getUser(99L))

@@ -66,7 +66,7 @@ class BookingServiceImplTest {
     }
 
     @BeforeEach
-    void start() {
+    public void start() {
         LocalDateTime startLastBooking = LocalDateTime.now().minusDays(7);
         LocalDateTime endLastBooking = LocalDateTime.now().minusDays(3);
         LocalDateTime startNextBooking = LocalDateTime.now().plusDays(3);
@@ -99,12 +99,12 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void create() {
+    public void create() {
         assertEquals(bookingDtoNew.getId(), 1L);
     }
 
     @Test
-    void createWithWrongItem() {
+    public void createWithWrongItem() {
         BookingInputDto bookingInputDto2 = new BookingInputDto(2L,
                 6L, LocalDateTime.now().plusDays(25), LocalDateTime.now().plusDays(35));
         final ItemNotFoundException exception = assertThrows(ItemNotFoundException.class,
@@ -113,7 +113,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void createWithWrongBookerId() {
+    public void createWithWrongBookerId() {
         BookingInputDto bookingInputDto2 = new BookingInputDto(2L,
                 item1.getId(), LocalDateTime.now().plusDays(25), LocalDateTime.now().plusDays(35));
         final ItemNotFoundException exception = assertThrows(ItemNotFoundException.class,
@@ -122,7 +122,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void createWithItemNotAvailable() {
+    public void createWithItemNotAvailable() {
         item1.setAvailable(false);
         itemDto1.setAvailable(false);
         itemRepository.save(item1);
@@ -135,13 +135,13 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getAllByBooker() {
+    public void getAllByBooker() {
         List<BookingDto> allByBooker = bookingService.getAllByBooker(user2.getId(), BookingState.ALL, 1, 10);
         assertEquals(allByBooker.size(), 1);
     }
 
     @Test
-    void getAllByBookerWithWrongPage() {
+    public void getAllByBookerWithWrongPage() {
         final ValidationException exception = assertThrows(ValidationException.class,
                 () -> bookingService.getAllByBooker(user2.getId(), BookingState.ALL, -1, -10));
 
@@ -149,80 +149,80 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getAllByBookerCurrent() {
+    public void getAllByBookerCurrent() {
         List<BookingDto> allByBooker = bookingService.getAllByBooker(user2.getId(), BookingState.CURRENT, 1, 10);
         assertEquals(allByBooker.size(), 0);
     }
 
     @Test
-    void getAllByBookerPast() {
+    public void getAllByBookerPast() {
         List<BookingDto> allByBooker = bookingService.getAllByBooker(user2.getId(), BookingState.PAST, 1, 10);
         assertEquals(allByBooker.size(), 0);
     }
 
     @Test
-    void getAllByBookerFuture() {
+    public void getAllByBookerFuture() {
         List<BookingDto> allByBooker = bookingService.getAllByBooker(user2.getId(), BookingState.FUTURE, 1, 10);
         assertEquals(allByBooker.size(), 1);
     }
 
     @Test
-    void getAllByBookerWaiting() {
+    public void getAllByBookerWaiting() {
         List<BookingDto> allByBooker = bookingService.getAllByBooker(user2.getId(), BookingState.WAITING, 1, 10);
         assertEquals(allByBooker.size(), 1);
     }
 
     @Test
-    void getAllByBookerRejected() {
+    public void getAllByBookerRejected() {
         List<BookingDto> allByBooker = bookingService.getAllByBooker(user2.getId(), BookingState.REJECTED, 1, 10);
         assertEquals(allByBooker.size(), 0);
     }
 
     @Test
-    void getAllByOwner() {
+    public void getAllByOwner() {
         List<BookingDto> allByBooker = bookingService.getAllByOwner(user1.getId(), BookingState.ALL, 1, 10);
         assertEquals(allByBooker.size(), 1);
     }
 
     @Test
-    void getAllByOwnerWrongPage() {
+    public void getAllByOwnerWrongPage() {
         final ValidationException exception = assertThrows(ValidationException.class,
                 () -> bookingService.getAllByOwner(user1.getId(), BookingState.ALL, -1, 10));
         assertEquals("не верно указан количество позиций на странице", exception.getMessage());
     }
 
     @Test
-    void getAllByOwnerCurrent() {
+    public void getAllByOwnerCurrent() {
         List<BookingDto> allByBooker = bookingService.getAllByOwner(user1.getId(), BookingState.CURRENT, 1, 10);
         assertEquals(allByBooker.size(), 0);
     }
 
     @Test
-    void getAllByOwnerPast() {
+    public void getAllByOwnerPast() {
         List<BookingDto> allByBooker = bookingService.getAllByOwner(user1.getId(), BookingState.PAST, 1, 10);
         assertEquals(allByBooker.size(), 0);
     }
 
     @Test
-    void getAllByOwnerWaiting() {
+    public void getAllByOwnerWaiting() {
         List<BookingDto> allByBooker = bookingService.getAllByOwner(user1.getId(), BookingState.WAITING, 1, 10);
         assertEquals(allByBooker.size(), 1);
     }
 
     @Test
-    void getAllByOwnerReject() {
+    public void getAllByOwnerReject() {
         List<BookingDto> allByBooker = bookingService.getAllByOwner(user1.getId(), BookingState.REJECTED, 1, 10);
         assertEquals(allByBooker.size(), 0);
     }
 
     @Test
-    void getById() {
+    public void getById() {
         BookingDto bookingDtoGetById = bookingService.getById(bookingInputDto.getId(), user2.getId());
         assertEquals(bookingDtoGetById.getId(), bookingInputDto.getId());
     }
 
     @Test
-    void update() {
+    public void update() {
         BookingDto bookingDtoUpdate = bookingService.update(bookingDtoNew.getId(), user1.getId(), true);
         assertEquals(bookingDtoUpdate.getStatus(), Status.APPROVED);
     }

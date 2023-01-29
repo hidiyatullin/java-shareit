@@ -47,7 +47,7 @@ class ItemControllerTestMockMvc {
     }
 
     @BeforeEach
-    void start() {
+    public void start() {
         itemDto1 = ItemDto.builder()
                 .id(1L)
                 .name("itemDtoName1")
@@ -86,7 +86,7 @@ class ItemControllerTestMockMvc {
     }
 
     @Test
-    void create() throws Exception {
+    public void create() throws Exception {
         when(itemService.createItem(any(), anyLong()))
                 .thenReturn(itemDto1);
 
@@ -106,7 +106,7 @@ class ItemControllerTestMockMvc {
     }
 
     @Test
-    void update() throws Exception {
+    public void update() throws Exception {
         itemService.createItem(itemDto1, userDto1.getId());
         when(itemService.updateItem(any(), anyLong(), anyLong()))
                 .thenReturn(itemDto2);
@@ -127,7 +127,7 @@ class ItemControllerTestMockMvc {
     }
 
     @Test
-    void getAll() throws Exception {
+    public void getAll() throws Exception {
         itemService.createItem(itemDto1, userDto1.getId());
         itemService.createItem(itemDto2, userDto1.getId());
 
@@ -148,7 +148,7 @@ class ItemControllerTestMockMvc {
     }
 
     @Test
-    void getById() throws Exception {
+    public void getById() throws Exception {
         itemService.createItem(itemDto1, userDto1.getId());
         when(itemService.getItem(anyLong(), anyLong()))
                 .thenReturn(itemDto1);
@@ -165,7 +165,7 @@ class ItemControllerTestMockMvc {
     }
 
     @Test
-    void search() throws Exception {
+    public void search() throws Exception {
         itemService.createItem(itemDto1, userDto1.getId());
         when(itemService.findItems(anyString(), anyInt(), anyInt()))
                 .thenReturn(List.of(itemDto1));
@@ -182,7 +182,7 @@ class ItemControllerTestMockMvc {
     }
 
     @Test
-    void addComment() throws Exception {
+    public void addComment() throws Exception {
         itemService.createItem(itemDto1, userDto1.getId());
         when(itemService.addComment(anyLong(), anyLong(), any()))
                 .thenReturn(commentDto1);

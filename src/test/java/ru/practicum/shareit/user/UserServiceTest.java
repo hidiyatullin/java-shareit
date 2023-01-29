@@ -41,7 +41,7 @@ class UserServiceTest {
     }
 
     @BeforeEach
-    void start() {
+    public void start() {
         userDto1 = new UserDto(1L, "userDtoname1", "userDto1Email@email");
         userDto2 = new UserDto(2L, "userDtoname2", "userDto2Email@email");
 
@@ -52,7 +52,7 @@ class UserServiceTest {
     }
 
     @Test
-    void create() {
+    public void create() {
         when(userRepository.save(user1))
                 .thenReturn(user1);
 
@@ -66,7 +66,7 @@ class UserServiceTest {
     }
 
     @Test
-    void update() {
+    public void update() {
         userService.createUser(userDto1);
         userService.updateUser(userDto2,1L);
         UserDto userDtoNew = userService.getUser(userDto1.getId());
@@ -74,7 +74,7 @@ class UserServiceTest {
     }
 
     @Test
-    void updatewithUserNullParametrs() {
+    public void updatewithUserNullParametrs() {
         userRepository.save(user1);
         userService.createUser(userDto1);
         UserDto userDtoNew = new UserDto(2L, null, null);
@@ -82,7 +82,7 @@ class UserServiceTest {
     }
 
     @Test
-    void getById() {
+    public void getById() {
         userRepository.findById(1L);
         when(userRepository.findById(1L))
                 .thenReturn(Optional.of(user1));
@@ -97,7 +97,7 @@ class UserServiceTest {
     }
 
     @Test
-    void getByIdUserNotExist() {
+    public void getByIdUserNotExist() {
         userRepository.findById(99L);
         when(userRepository.findById(99L))
                 .thenReturn(Optional.ofNullable(user1));
@@ -110,16 +110,14 @@ class UserServiceTest {
     }
 
     @Test
-    void delete() {
-
+    public void delete() {
         userService.createUser(userDto1);
         userService.deleteUser(1L);
-
         assertEquals(userService.getUsers().size(), 0);
     }
 
     @Test
-    void getAll() {
+    public void getAll() {
         userService.createUser(userDto1);
         userService.createUser(userDto2);
         List<UserDto> userDtos = userService.getUsers();

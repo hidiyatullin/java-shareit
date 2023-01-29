@@ -45,7 +45,7 @@ class BookingRepositoryTest {
     }
 
     @BeforeEach
-    void start() {
+    public void start() {
         user1 = new User(1L, "user1", "user1@email.ru");
         user2 = new User(2L, "user2", "user2@email.ru");
         item1 = new Item(1L, "itemName1", "descriptionItem1", true, user1, null);
@@ -60,7 +60,7 @@ class BookingRepositoryTest {
     }
 
     @Test
-    void findAllByBookerIdOrderByStartDesc() {
+    public void findAllByBookerIdOrderByStartDesc() {
         TypedQuery<Booking> query = em.getEntityManager()
                 .createQuery("Select b from Booking b where b.booker.id = :idBooker order by b.start desc ", Booking.class);
         Booking booking = query.setParameter("idBooker", booking1.getBooker().getId()).getSingleResult();
@@ -68,7 +68,7 @@ class BookingRepositoryTest {
     }
 
     @Test
-    void findAllByBookerIdAndEndBeforeOrderByIdDesc() {
+    public void findAllByBookerIdAndEndBeforeOrderByIdDesc() {
         TypedQuery<Booking> query = em.getEntityManager()
                 .createQuery("Select b from Booking b where b.booker.id = :idBooker and b.end < :currentDate order by b.id desc ", Booking.class);
         query.setParameter("idBooker", booking1.getBooker().getId());
@@ -78,7 +78,7 @@ class BookingRepositoryTest {
     }
 
     @Test
-    void findAllByBookerCurrent() {
+    public void findAllByBookerCurrent() {
         TypedQuery<Booking> query = em.getEntityManager()
                 .createQuery("Select b from Booking b where b.booker.id = :idBooker and b.end > :currentDate order by b.id desc ", Booking.class);
         query.setParameter("idBooker", booking1.getBooker().getId());

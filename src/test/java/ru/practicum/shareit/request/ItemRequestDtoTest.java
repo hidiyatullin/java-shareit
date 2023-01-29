@@ -28,7 +28,7 @@ class ItemRequestDtoTest {
     }
 
     @Test
-    void testItemRequestDto() throws Exception {
+    public void testItemRequestDto() throws Exception {
         ItemRequestDto itemRequestDto = new ItemRequestDto(1L, "itemRequestDescription", user, LocalDateTime.now(), null);
         JsonContent<ItemRequestDto> result = json.write(itemRequestDto);
         assertThat(result).extractingJsonPathNumberValue("$.id").isEqualTo(itemRequestDto.getId().intValue());
