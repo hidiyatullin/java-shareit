@@ -46,7 +46,8 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         validateUser(requesterId);
         List<ItemRequest> requests = itemRequestRepository.findByUserId(requesterId);
         List<ItemRequestDto> requestDtos = requests.stream()
-                .map(ItemRequestMapper::toDto).collect(Collectors.toList());
+                .map(ItemRequestMapper::toDto)
+                .collect(Collectors.toList());
 
         List<Long> ids = requestDtos.stream()
                 .map(ItemRequestDto::getId)
@@ -75,17 +76,21 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         final PageRequest pageRequest = PageRequest.of(page, size, sortByCreated);
         List<ItemRequest> itemRequests = new ArrayList<>(itemRequestRepository.findAllByUserID(requesterId, pageRequest));
         List<ItemRequestDto> requestDtos = itemRequests.stream()
-                .map(ItemRequestMapper::toDto).collect(Collectors.toList());
+                .map(ItemRequestMapper::toDto)
+                .collect(Collectors.toList());
+
+        List<Long> ids = requestDtos.stream()
+                .map(ItemRequestDto::getId)
+                .filter(id -> id != 0)
+                .collect(Collectors.toList());
+
+        List<Item> items = itemRepository.findByRequest_IdIn(ids);
         List<ItemRequestDto> requestDtosWithAnswer = new ArrayList<>();
         for (ItemRequestDto requestDto : requestDtos) {
-            Long idRequestDto = requestDto.getId();
-            if (idRequestDto != 0) {
-                List<Item> items = itemRepository.findByIdRequest(idRequestDto);
-                List<ItemRequestDto.ItemAnswerDto> newItemList =
-                        ItemRequestMapper.itemRequestDtoWithAnswer(requestDto, items);
-                requestDto.setItems(newItemList);
-                requestDtosWithAnswer.add(requestDto);
-            }
+            List<ItemRequestDto.ItemAnswerDto> newItemList =
+                    ItemRequestMapper.itemRequestDtoWithAnswer(requestDto, items);
+            requestDto.setItems(newItemList);
+            requestDtosWithAnswer.add(requestDto);
         }
         return requestDtosWithAnswer;
     }
