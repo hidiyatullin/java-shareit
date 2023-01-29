@@ -60,7 +60,6 @@ class UserServiceTest {
         UserDto userDtoNew = userService.getUser(userDto1.getId());
 
         assertEquals(userDtoNew.getId(), userDto1.getId());
-
         Mockito.verify(userRepository, Mockito.times(1))
                 .save(user1);
     }
