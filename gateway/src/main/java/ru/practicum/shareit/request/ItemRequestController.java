@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.Create;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+
 @RestController
 @RequestMapping(path = "/requests")
 @RequiredArgsConstructor
@@ -31,8 +34,8 @@ public class ItemRequestController {
 
     @GetMapping("/all")
     public ResponseEntity<Object> getAllItemRequests(@RequestHeader("X-Sharer-User-Id") Long requesterId,
-                                                   @RequestParam(name = "from", defaultValue = "0") int from,
-                                                   @RequestParam(name = "size", defaultValue = "10") int size) {
+                                                   @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") int from,
+                                                   @Positive @RequestParam(name = "size", defaultValue = "10") int size) {
         log.info("Запрос на получение всех запросов с параметрами from " + from + " size" + size);
         return itemRequestClient.getAllItemRequests(requesterId, from, size);
     }

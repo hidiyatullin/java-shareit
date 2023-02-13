@@ -83,7 +83,6 @@ public class BookingServiceImpl implements BookingService {
                 break;
             case WAITING:
                 bookings = bookingRepository.findAllByBookerIdStateWaiting(userId, pageRequest);
-//                log.info("ServiceImpl " + bookings);
                 break;
             case REJECTED:
                 bookings = bookingRepository.findAllByBookerIdStateRejected(userId, pageRequest);

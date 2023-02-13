@@ -10,7 +10,6 @@ import ru.practicum.shareit.booking.dto.BookItemRequestDto;
 import ru.practicum.shareit.booking.dto.BookingState;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
@@ -57,10 +56,10 @@ public class BookingController {
 	@GetMapping("/owner")
 	public ResponseEntity<Object> getAllForOwner(@RequestHeader("X-Sharer-User-Id") Long userId,
 										   @RequestParam(name = "state", defaultValue = "ALL") String state,
-										   @RequestParam(name = "from", defaultValue = "0") int from,
-										   @RequestParam(name = "size", defaultValue = "10") int size) {
+										@PositiveOrZero @RequestParam(name = "from", defaultValue = "0") int from,
+										@Positive @RequestParam(name = "size", defaultValue = "10") int size) {
 		BookingState bookingState = BookingState.from(state)
-				.orElseThrow(() -> new ValidationException("Unknown state: " + state));
+				.orElseThrow(() -> new IllegalArgumentException("Unknown state: " + state));
 		log.info("Запрос на получение всех бронирований для арендодателя создан");
 		return bookingClient.getAllByOwner(userId, bookingState, from, size);
 	}
