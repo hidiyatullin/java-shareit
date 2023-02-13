@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.Exeption.ValidationException;
 import ru.practicum.shareit.booking.dto.BookItemRequestDto;
 import ru.practicum.shareit.booking.dto.BookingState;
 
@@ -27,7 +28,7 @@ public class BookingController {
 			@PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
 			@Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
 		BookingState state = BookingState.from(stateParam)
-				.orElseThrow(() -> new IllegalArgumentException("Unknown state: " + stateParam));
+				.orElseThrow(() -> new ValidationException("Unknown state: " + stateParam));
 		log.info("Get booking with state {}, userId={}, from={}, size={}", stateParam, userId, from, size);
 		return bookingClient.getBookings(userId, state, from, size);
 	}
@@ -56,10 +57,10 @@ public class BookingController {
 	@GetMapping("/owner")
 	public ResponseEntity<Object> getAllForOwner(@RequestHeader("X-Sharer-User-Id") Long userId,
 										   @RequestParam(name = "state", defaultValue = "ALL") String state,
-										@PositiveOrZero @RequestParam(name = "from", defaultValue = "0") int from,
-										@Positive @RequestParam(name = "size", defaultValue = "10") int size) {
+										@PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
+										@Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
 		BookingState bookingState = BookingState.from(state)
-				.orElseThrow(() -> new IllegalArgumentException("Unknown state: " + state));
+				.orElseThrow(() -> new ValidationException("Unknown state: " + state));
 		log.info("Запрос на получение всех бронирований для арендодателя создан");
 		return bookingClient.getAllByOwner(userId, bookingState, from, size);
 	}
