@@ -35,7 +35,7 @@ public class ItemRequestController {
     @GetMapping("/all")
     public ResponseEntity<Object> getAllItemRequests(@RequestHeader("X-Sharer-User-Id") Long requesterId,
                                                    @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") int from,
-                                                   @Positive @RequestParam(name = "size", defaultValue = "10") int size) {
+                                                   @Positive  @RequestParam(name = "size", defaultValue = "10") int size) {
         log.info("Запрос на получение всех запросов с параметрами from " + from + " size" + size);
         return itemRequestClient.getAllItemRequests(requesterId, from, size);
     }
