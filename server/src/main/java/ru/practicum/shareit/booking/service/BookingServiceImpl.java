@@ -39,7 +39,6 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto create(BookingInputDto bookingInputDto, Long bookerId) {
         User userBooker = userRepository.findById(bookerId)
                 .orElseThrow(() -> new UserNotFoundException("Пользователя с id " + bookerId + " не зарегестрирован"));
-        validBookingDate(bookingInputDto);
         Long itemId = bookingInputDto.getItemId();
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ItemNotFoundException("Вещь с id " + itemId + " не найдена"));
@@ -62,9 +61,6 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingDto> getAllByBooker(Long userId, BookingState state, Integer from, Integer size) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Нет такого пользователя"));
-        if (from < 0 || size <= 0) {
-            throw new ValidationException("не верно указан количество позиций на странице");
-        }
         int page = from / size;
         final PageRequest pageRequest = PageRequest.of(page, size);
         List<Booking> bookings = new ArrayList<>();
@@ -101,9 +97,6 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingDto> getAllByOwner(Long userId, BookingState state, Integer from, Integer size) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Нет такого пользователя"));
-        if (from < 0 || size <= 0) {
-            throw new ValidationException("не верно указан количество позиций на странице");
-        }
         int page = from / size;
         final PageRequest pageRequest = PageRequest.of(page, size);
         List<Booking> bookings = new ArrayList<>();
@@ -180,13 +173,5 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new BookingNotFoundException("Бронирование с id " + id + " не зарегестрирован"));
         bookingRepository.delete(booking);
-    }
-
-    private void validBookingDate(BookingInputDto bookingInputDto) {
-        LocalDateTime start = bookingInputDto.getStart();
-        LocalDateTime end = bookingInputDto.getEnd();
-        if (start.isAfter(end) || end.isBefore(start)) {
-            throw new ValidationException("Дата начала бронирования должна быть раньше даты окончания бронирования");
-        }
     }
 }

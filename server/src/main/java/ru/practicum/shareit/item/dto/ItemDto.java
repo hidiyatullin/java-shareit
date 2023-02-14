@@ -47,6 +47,6 @@ public class ItemDto {
         Long id;
         String text;
         Item item;
-        User author;
+        String authorName;
     }
 }

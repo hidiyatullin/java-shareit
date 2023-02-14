@@ -13,6 +13,7 @@ import ru.practicum.shareit.booking.dto.BookingState;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping(path = "/bookings")
@@ -36,6 +37,7 @@ public class BookingController {
 	@PostMapping
 	public ResponseEntity<Object> bookItem(@RequestHeader("X-Sharer-User-Id") long userId,
 			@RequestBody @Valid BookItemRequestDto requestDto) {
+		validBookingDate(requestDto);
 		log.info("Creating booking {}, userId={}", requestDto, userId);
 		return bookingClient.bookItem(userId, requestDto);
 	}
@@ -63,5 +65,13 @@ public class BookingController {
 				.orElseThrow(() -> new ValidationException("Unknown state: " + state));
 		log.info("Запрос на получение всех бронирований для арендодателя создан");
 		return bookingClient.getAllByOwner(userId, bookingState, from, size);
+	}
+
+	private void validBookingDate(BookItemRequestDto bookingInputDto) {
+		LocalDateTime start = bookingInputDto.getStart();
+		LocalDateTime end = bookingInputDto.getEnd();
+		if (start.isAfter(end) || end.isBefore(start)) {
+			throw new ValidationException("Дата начала бронирования должна быть раньше даты окончания бронирования");
+		}
 	}
 }
